@@ -45,14 +45,62 @@ func pars(filename string) ([][]int, error) {
 	return ranges, nil
 }
 
+func SplitDigits(n int) []int {
+	s := strconv.Itoa(n)
+	digits := make([]int, len(s))
+
+	for i, ch := range s {
+		digits[i] = int(ch - '0') // convert rune to int digit
+	}
+
+	return digits
+}
+
+/*
+func hasRepeatingSequence(num string) bool {
+	length := len(num)
+	for size := 1; size <= length/2; size++ {
+		seq := num[:size]
+		if strings.Repeat(seq, length/size) == num {
+			return true
+		}
+	}
+	return false
+}
+*/
+
+func isDoubleSequence(n int) bool {
+	s := strconv.Itoa(n)
+	length := len(s)
+
+	if length%2 != 0 {
+		return false
+	}
+
+	half := length / 2
+	first := s[:half]
+	second := s[half:]
+
+	return first == second
+}
+
 func main() {
 	ranges, err := pars("./input.txt")
 	if err != nil {
 		panic(err)
 	}
+	total := 0
 	for i := range ranges {
-		for ranges[i][0] < ranges[i][1] {
+		start := ranges[i][0]
+		end := ranges[i][1]
 
+		for num := start; num <= end; num++ {
+			//str := strconv.Itoa(num)
+			if isDoubleSequence(num) {
+				total += num
+				fmt.Printf("%d\n", num)
+			}
 		}
 	}
+	fmt.Printf("%d", total)
 }
